@@ -4,8 +4,14 @@ from toy_modules.utils import generate_datasets
 from toy_modules.models import RegressorNet
 from toy_modules.train import train
 
+tf.get_logger().setLevel('ERROR')
+
+
 
 if __name__ == '__main__':
+
+    tf.get_logger().setLevel('ERROR')
+
 
     # Generate datasets
     train_dataset, test_dataset = generate_datasets()
@@ -20,7 +26,9 @@ if __name__ == '__main__':
     train(
         model=regressor,
         epochs=200,
+        # For testing: 
+        #epochs=10,
         train_dataset=train_dataset,
         test_dataset=test_dataset,
-        save_dir='run1'
+        save_dir='run2'
     )

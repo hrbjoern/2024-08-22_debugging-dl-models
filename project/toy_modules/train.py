@@ -2,6 +2,7 @@ import os
 import tensorflow as tf
 
 from toy_modules.utils import make_writer
+#from utils import make_writer
 
 
 def train(model, epochs, train_dataset, test_dataset, save_dir):
@@ -35,3 +36,17 @@ def train(model, epochs, train_dataset, test_dataset, save_dir):
             # Test loss calculation
             loss_test = model.get_loss(X, y)
             test_loss(loss_test)
+
+        #print("train_loss: {:.4f}, test_loss: {:.4f}".format(train_loss.result(), test_loss.result()))
+
+        if epoch % 20 == 0:
+            message = (
+                f"Epoch: {epoch}, Train Loss: {train_loss.result()}, "
+                f"Test Loss: {test_loss.result()}"
+            )
+            print(message)
+
+        # Tensorboard
+        with writer.as_default():
+            tf.summary.scalar('Train loss', train_loss.result(), step=epoch)
+            tf.summary.scalar('Test loss', test_loss.result(), step=epoch)

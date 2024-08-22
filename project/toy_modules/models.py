@@ -20,11 +20,13 @@ class RegressorNet(tf.keras.Model):
         )
         self.concat = tf.keras.layers.Concatenate(name='concat')
         self.dense_2 = tf.keras.layers.Dense(
+            # Bug? 32 or 128?
             32, activation='relu',
             kernel_initializer=tf.keras.initializers.GlorotUniform(),
             name='dense_2'
         )
         self.out = tf.keras.layers.Dense(
+            # Bug? this shouldn't be relu, I guess? 
             1, activation='relu',
             kernel_initializer=tf.keras.initializers.GlorotUniform(),
             name='dense_out'
@@ -33,7 +35,7 @@ class RegressorNet(tf.keras.Model):
         # Create network logic
         x_input = tf.keras.Input(shape=(input_shape, ))
         x1 = x_input[:, :x_input.shape[1] // 2]
-        x2 = x_input[:, x_input.shape[1] // 2:]
+        x2 = x_input[:, x_input.shape[1] // 2:] # Bug? x2 is not used?
 
         h1 = self.dense_1_1(x1)
         h2 = self.dense_1_2(x1)
@@ -51,6 +53,8 @@ class RegressorNet(tf.keras.Model):
         # Compute standard MSE (L2) loss
         l2_loss = tf.math.reduce_mean(tf.math.square(y_true - y_pred))
         return l2_loss
+    
+    # BUG: accidental broadcasting, y_pred vs y_true?! 
 
     def grad_step(self, x, y_true):
         with tf.GradientTape() as tape:

@@ -16,3 +16,5 @@ the arguments of the functions and methods being specified and called.
 - Find the bugs that affect the learning:
     - For each bug found create a new tensorboard directory to compare results. 
     (Example: found bug X --> TB output goes into summaries/bug_X)
+
+- Goal: Final test loss ~18. ;-)
